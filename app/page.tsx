@@ -9,22 +9,48 @@ export default function Home() {
   const circumference = Math.round(((diameter * Math.PI) + Number.EPSILON) * 1000) / 1000
 
   const area = Math.round((Math.PI * Math.pow(radius, 2) + Number.EPSILON) * 1000) / 1000;
-  const svgWidth = 500;
-  const svgHeight = 500;
+  const svgWidth = 600;
+  const svgHeight = 600;
 
   useEffect(() => {
     // Select the SVG element
     const svg = d3.select('#circles-svg');
-
-    svg.selectAll("circle").remove();
+    
+    // Clear previous elements
+    svg.selectAll("*").remove();
+    
+    // Calculate scaled radius
+    const scaledRadius = Math.min(svgWidth, svgHeight) / 2 * (radius / 25);
+    
+    // Compute the color of the circle
+    // We want to go around the color scale twice with a small offset for flavor!
+    const fillValue = Math.round((radius / 25) * 720) + 5;
+    const fill = `hsl(${fillValue}, 100%, 50%)`
+    console.log(fillValue);
     
     // Add a circle
     svg.append('circle')
       .attr('cx', svgWidth / 2)
       .attr('cy', svgHeight / 2)
-      .attr('r', Math.min(svgWidth, svgHeight) / 2 * (radius / 25)) // scale the radius
-      // fill with a mathematically generated color based upon the radius
-      .attr('fill', `hsl(${Math.round((radius / 25) * 360)}, 100%, 50%)`)
+      .attr('r', scaledRadius)
+      .attr('fill', fill);
+    
+    // Add radius line
+    svg.append('line')
+      .attr('x1', svgWidth / 2)
+      .attr('y1', svgHeight / 2)
+      .attr('x2', svgWidth / 2)
+      .attr('y2', (svgHeight / 2) - scaledRadius)
+      .attr('stroke', (fillValue % 360 > 210)  ? 'white' : 'black') // change this based on your actual fill logic
+      .attr('stroke-width', 3);
+    
+    // Add radius label
+    svg.append('text')
+      .attr('x', svgWidth / 2 + 10)  // 10 pixels right of the line end
+      .attr('y', (svgHeight / 2) - scaledRadius - 4) // align with the line end and offset
+      .attr('font-size', '16px')
+      .attr('text-anchor', 'middle')
+      .text(`${radius}`);
   }, [radius]);
 
   return (
