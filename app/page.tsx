@@ -23,9 +23,9 @@ export default function Home() {
   const [radiusVelocity, setRadiusVelocity] = useState(startingRadiusVelocity);
   // friction is a constant that gives motion a sticky feeling. 0 is no friction, 1 is max friction
   const radiusFriction = .85
-  const [radiusDelta, setRadiusDelta] = useState(1.5);
-  const rotationFriction = 0.9;
-  const [rotationDelta, setRotationDelta] = useState(10);
+  const [radiusDelta, setRadiusDelta] = useState(0);
+  const rotationFriction = .9;
+  const [rotationDelta, setRotationDelta] = useState(0);
 
   const area = Math.round((Math.PI * Math.pow(radius, 2) + Number.EPSILON) * 1000) / 1000;
   const svgWidth = 600;
