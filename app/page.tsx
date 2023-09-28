@@ -22,7 +22,7 @@ export default function Home() {
   const startingRadiusVelocity = 1;
   const [radiusVelocity, setRadiusVelocity] = useState(startingRadiusVelocity);
   // friction is a constant that gives motion a sticky feeling. 0 is no friction, 1 is max friction
-  const radiusFriction = .85
+  const radiusFriction = .7
   const [radiusDelta, setRadiusDelta] = useState(0);
   const rotationFriction = .9;
   const [rotationDelta, setRotationDelta] = useState(0);
@@ -52,7 +52,7 @@ export default function Home() {
     return () => {
       // Cleanup: cancel the animation frame
       if (animationFrameId) {
-      cancelAnimationFrame(animationFrameId);
+        cancelAnimationFrame(animationFrameId);
       }
     };
   }, [radius, referenceAngle, radiusVelocity, rotationVelocity, radiusDelta, rotationDelta, radiusFriction, rotationFriction]);
@@ -97,24 +97,42 @@ export default function Home() {
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm">
         <h1 className='font-mono text-2xl text-center'>This is for Raphi, Bleep Bloop</h1>
       </div>
-    <div className="max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-      <div className='min-w-[500px]'>
-        <svg id="circles-svg" width={svgWidth} height={svgHeight}></svg>
+      <div className="max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
+        <div className='min-w-[500px]'>
+          <svg id="circles-svg" width={svgWidth} height={svgHeight}></svg>
+        </div>
+        <div>
+          <div className="font-mono text-sm flex justify-between">
+            <div className="w-48">Radius: <br />(r)</div>
+            <div>{radius.toFixed(2)} px</div>
+          </div>
+          <div className="font-mono text-sm flex justify-between">
+            <div>Diameter: <br /> (D = 2 * r):</div>
+            <div>{diameter.toFixed(2)} px</div>
+          </div>
+          <div className="font-mono text-sm flex justify-between">
+            <div>Circumference: <br />(C = π * D)</div>
+            <div>{circumference.toFixed(3)} px</div>
+          </div>
+          <div className="font-mono text-sm flex justify-between">
+            <div>Area: <br /> (A = π * r²)</div>
+            <div className='-mr-2'>{area.toFixed(3)} px²</div>
+          </div>
+          <div className="mt-4 font-mono text-sm flex justify-between">
+            <div>Pi !!!</div>
+            <div>3.14...</div>
+          </div>
+
+        </div>
+
+      </div>
+      <div className="w-36 items-center gap-2 justify-between font-mono text-sm lg:flex">
+        <label htmlFor="radius">Set The Radius!</label>
+        <input type="range" min="1" max="25" value={radius} onChange={(e) => setRadius(Number(e.target.value))} />
       </div>
       <div>
-        <div className="font-mono text-sm"><em>Radius:</em> {radius}</div>
-        <div className="font-mono text-sm"><em>Diameter:</em> {diameter}</div>
-        <div className="font-mono text-sm"><em>Circumference:</em> {circumference}</div>
-        <div className="font-mono text-sm"><em>Area:</em> {area}</div>
+        {/* {radiusVelocity.toFixed(2)} {radiusDelta.toFixed(2)} {rotationVelocity.toFixed(2)} { rotationDelta.toFixed(2)} */}
       </div>
-    </div>
-    <div className="w-36 items-center gap-2 justify-between font-mono text-sm lg:flex">
-      <label htmlFor="radius">Set The Radius!</label>
-      <input type="range" min="1" max="25" value={radius} onChange={(e) => setRadius(Number(e.target.value))} />
-    </div>
-    <div>
-      {radiusVelocity.toFixed(2)} {radiusDelta.toFixed(2)} {rotationVelocity.toFixed(2)} { rotationDelta.toFixed(2)}
-    </div>
-  </main>
+    </main>
   )
 }
